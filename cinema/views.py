@@ -62,6 +62,28 @@ class CinemaHallViewSet(
     permission_classes = (IsAdminOrIfAuthenticatedReadOnly,)
 
 
+@extend_schema(
+    parameters=[
+        OpenApiParameter(
+            name="title",
+            description="Filter movies by title (case-insensitive substring)",
+            required=False,
+            type=str,
+        ),
+        OpenApiParameter(
+            name="genres",
+            description="Filter movies by genres IDs (comma separated)",
+            required=False,
+            type=str,
+        ),
+        OpenApiParameter(
+            name="actors",
+            description="Filter movies by actors IDs (comma separated)",
+            required=False,
+            type=str,
+        ),
+    ]
+)
 class MovieViewSet(
     mixins.ListModelMixin,
     mixins.CreateModelMixin,
