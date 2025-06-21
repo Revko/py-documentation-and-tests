@@ -11,6 +11,7 @@ from rest_framework.viewsets import GenericViewSet, ReadOnlyModelViewSet
 
 from cinema.models import Genre, Actor, CinemaHall, Movie, MovieSession, Order
 from cinema.permissions import IsAdminOrIfAuthenticatedReadOnly
+from drf_spectacular.utils import extend_schema, OpenApiParameter
 
 from cinema.serializers import (
     GenreSerializer,
@@ -128,6 +129,22 @@ class MovieViewSet(
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@extend_schema(
+    parameters=[
+        OpenApiParameter(
+            name="date",
+            description="Filter by show date (YYYY-MM-DD)",
+            required=False,
+            type=str
+        ),
+        OpenApiParameter(
+            name="movie",
+            description="Filter by movie ID",
+            required=False,
+            type=int
+        ),
+    ]
+)
 class MovieSessionViewSet(viewsets.ModelViewSet):
     queryset = (
         MovieSession.objects.all()
